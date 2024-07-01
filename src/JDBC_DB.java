@@ -12,7 +12,7 @@ public class JDBC_DB {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(url, user, password);
             if (con != null) {
-                System.out.println("Database connected successfully!");
+                 System.out.println("Database connected successfully!");
                 System.out.println("Connection Info: " + con);
                 java.sql.Driver driver = DriverManager.getDriver(url);
                 System.out.println("JDBC Driver: " + driver.getClass().getName());
@@ -46,8 +46,38 @@ public class JDBC_DB {
                     System.out.println(emp_id + " " + name + " " + gender + " " + salary + " " + start_date + " " + ph_number + " " + address + " " + department + " " + Basic_pay + " " + Deductions + " " + Taxable_pay + " " + Income_tax + " " + Net_pay);
                     System.out.println();
                 }
+                System.out.println("----------------Sum Of Salary----------------");
+                ResultSet sumset = stmt.executeQuery("SELECT gender,SUM(salary) FROM employee_payroll WHERE gender = 'M' OR gender = 'F' GROUP BY gender");
+                while(sumset.next()){
+                    System.out.println("Gender: "+ sumset.getString(1));
+                    System.out.println("Salary: "+ sumset.getString(2));
+                }
+                System.out.println("---------------Average of Salary----------------");
+                ResultSet avgset = stmt.executeQuery("Select gender,AVG(salary) FROM employee_payroll WHERE gender='M' OR gender='F' GROUP BY gender");
+                while (avgset.next()){
+                    System.out.println("Gender: "+ avgset.getString(1));
+                    System.out.println("AVG Salary: "+ avgset.getString(2));
+                }
+                System.out.println("---------------Min of Salary----------------");
+                ResultSet minset = stmt.executeQuery("Select gender,MIN(salary) FROM employee_payroll WHERE gender='M' OR gender='F' GROUP BY gender");
+                while (minset.next()){
+                    System.out.println("Gender: "+ minset.getString(1));
+                    System.out.println("Min Salary: "+ minset.getString(2));
+                }
+                System.out.println("---------------MAX of Salary----------------");
+                ResultSet maxset = stmt.executeQuery("Select gender,MAX(salary) FROM employee_payroll WHERE gender='M' OR gender='F' GROUP BY gender");
+                while (maxset.next()){
+                    System.out.println("Gender: "+ maxset.getString(1));
+                    System.out.println("MAX Salary: "+ maxset.getString(2));
+                }
+                System.out.println("---------------Count of Salary----------------");
+                ResultSet countset = stmt.executeQuery("Select gender,COUNT(salary) FROM employee_payroll WHERE gender='M' OR gender='F' GROUP BY gender");
+                while (countset.next()){
+                    System.out.println("Gender: "+ countset.getString(1));
+                    System.out.println("Count Salary: "+ countset.getString(2));
+                }
 
-                con.close();
+
             } else {
                 System.out.println("Failed to make connection!");
             }
