@@ -5,7 +5,7 @@ public class JDBC_DB {
         String url = "jdbc:mysql://localhost:3306/payroll_service";
         String user = "root";
         String password = "swapnil";
-        String updateQuery = "UPDATE employee_payroll SET Salary=300000 WHERE name='Swapnil'";
+        String updateQuery = "UPDATE employee_payroll SET Salary=? WHERE name=?";
         String selectQuery = "SELECT * FROM employee_payroll";
 
         try {
@@ -21,14 +21,11 @@ public class JDBC_DB {
                     java.sql.Driver d = driverList.nextElement();
                     System.out.println("Registered JDBC Driver: " + d.getClass().getName());
                 }
-                Statement stmt = con.createStatement();
-
-                int rowsAffected = stmt.executeUpdate(updateQuery);
-                if (rowsAffected > 0) {
-                    System.out.println("Salary updated successfully for Swapnil.");
-                } else {
-                    System.out.println("No records updated. Please check the name 'Swapnil' in the database.");
-                }
+                PreparedStatement stmt =con.prepareStatement(updateQuery);
+                stmt.setInt(1,300000);
+                stmt.setString(2,"Swapnil");
+                stmt.executeUpdate();
+                System.out.println("Updated");
 
                 ResultSet rs = stmt.executeQuery(selectQuery);
                 while (rs.next()) {
